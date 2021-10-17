@@ -12,23 +12,23 @@ class Api::V1::TodosController < ApplicationController
   def create
     todo = Todo.new(todo_params)
     if todo.save
-      render jdon: todo
+      render json: todo
     else
-      render jdon: todo.errors, status: 422
+      render json: todo.errors, status: 422
     end
   end
 
-  def updated
+  def update
     todo = Todo.find(params[:id])
-    if todo.update
-      render jdon: todo
+    if todo.update(todo_params)
+      render json: todo
     else
-      render jdon: todo.errors, status: 422
+      render json: todo.errors, status: 422
     end
   end
 
   def destroy
-    if Todo.destroy(parmas[:id])
+    if Todo.destroy(params[:id])
       head :no_content
     else
       render json: { error: "Failed to destroy" }, status: 422
@@ -36,7 +36,7 @@ class Api::V1::TodosController < ApplicationController
   end
 
   def destroy_all
-    if Todo.destroy_all(parmas[:id])
+    if Todo.destroy_all
       head :no_content
     else
       render json: { error: "Failed to destroy" }, status: 422
